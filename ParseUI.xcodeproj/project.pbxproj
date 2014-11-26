@@ -740,6 +740,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2C9AC93D6C1063CD6DCC1F9A /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				DEFINES_MODULE = YES;
@@ -758,6 +759,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B774A7483212431D2C034600 /* Pods.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				DEFINES_MODULE = YES;
