@@ -1,13 +1,13 @@
 /*
- *  Copyright (c) 2014, Facebook, Inc. All rights reserved.
+ *  Copyright (c) 2014, Parse, LLC. All rights reserved.
  *
  *  You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
  *  copy, modify, and distribute this software in source code or binary form for use
- *  in connection with the web services and APIs provided by Facebook.
+ *  in connection with the web services and APIs provided by Parse.
  *
- *  As with any software that integrates with the Facebook platform, your use of
- *  this software is subject to the Facebook Developer Principles and Policies
- *  [http://developers.facebook.com/policy/]. This copyright notice shall be
+ *  As with any software that integrates with the Parse platform, your use of
+ *  this software is subject to the Parse Terms of Service
+ *  [https://www.parse.com/about/terms]. This copyright notice shall be
  *  included in all copies or substantial portions of the software.
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -26,15 +26,22 @@
 #import "CustomLogInViewController.h"
 #import "CustomProductTableViewController.h"
 #import "CustomSignUpViewController.h"
+#import "PaginatedCollectionViewController.h"
 #import "PaginatedTableViewController.h"
+#import "SectionedCollectionViewController.h"
 #import "SectionedTableViewController.h"
+#import "SimpleCollectionViewController.h"
 #import "SimpleTableViewController.h"
+#import "SubtitleImageCollectionViewController.h"
 #import "SubtitleImageTableViewController.h"
 
 typedef NS_ENUM(uint8_t, PFUIDemoType) {
     PFUIDemoTypeSimpleTable,
     PFUIDemoTypePaginatedTable,
     PFUIDemoTypeSectionedTable,
+    PFUIDemoTypeSimpleCollection,
+    PFUIDemoTypePaginatedCollection,
+    PFUIDemoTypeSectionedCollection,
     PFUIDemoTypeLogInDefault,
     PFUIDemoTypeLogInUsernamePassword,
     PFUIDemoTypeLogInPasswordForgotten,
@@ -54,6 +61,7 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
     PFUIDemoTypeSignUpMinPasswordLength,
     PFUIDemoTypeImageTableDefaultStyle,
     PFUIDemoTypeImageTableSubtitleStyle,
+    PFUIDemoTypeImageCollection,
     PFUIDemoTypePurchase,
     PFUIDemoTypeCustomizedPurchase
 };
@@ -77,6 +85,9 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
         _descriptions = @[ @"Simple Table",
                            @"Paginated Table",
                            @"Sectioned Table",
+                           @"Simple Collection",
+                           @"Paginated Collection",
+                           @"Sectioned Collection",
                            @"Log In Default",
                            @"Log In Username and Password",
                            @"Log In Password Forgotten",
@@ -96,6 +107,7 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
                            @"Sign Up Minimum Password Length",
                            @"Remote Image Table Default Style",
                            @"Remote Image Table Subtitle Style",
+                           @"Remote Image Collection",
                            @"Purchase",
                            @"Custom Purchase" ];
     }
@@ -146,6 +158,21 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
+        case PFUIDemoTypeSimpleCollection: {
+            SimpleCollectionViewController *controller = [[SimpleCollectionViewController alloc] initWithClassName:@"Todo"];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+            break;
+        case PFUIDemoTypePaginatedCollection: {
+            PaginatedCollectionViewController *controller = [[PaginatedCollectionViewController alloc] initWithClassName:@"Todo"];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+            break;
+        case PFUIDemoTypeSectionedCollection: {
+            SectionedCollectionViewController *controller = [[SectionedCollectionViewController alloc] initWithClassName:@"Todo"];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+            break;
         case PFUIDemoTypeLogInDefault: {
             PFLogInViewController *logInController = [[PFLogInViewController alloc] init];
             logInController.delegate = self;
@@ -339,6 +366,11 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
             [self.navigationController pushViewController:tableViewController animated:YES];
             break;
         }
+        case PFUIDemoTypeImageCollection: {
+            SubtitleImageCollectionViewController *controller = [[SubtitleImageCollectionViewController alloc] initWithClassName:@"App"];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+            break;
         case PFUIDemoTypePurchase: {
             PFProductTableViewController *purchaseController = [[PFProductTableViewController alloc] init];
             [self.navigationController pushViewController:purchaseController animated:YES];
@@ -359,7 +391,7 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
 }
 
 - (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    // Do nothing, as the view controller dismisses itself
 }
 
 #pragma mark -
@@ -369,8 +401,8 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)signUpViewControllerDidCancelLogIn:(PFSignUpViewController *)signUpController {
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
+    // Do nothing, as the view controller dismisses itself
 }
 
 @end

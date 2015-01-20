@@ -1,13 +1,13 @@
 /*
- *  Copyright (c) 2014, Facebook, Inc. All rights reserved.
+ *  Copyright (c) 2014, Parse, LLC. All rights reserved.
  *
  *  You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
  *  copy, modify, and distribute this software in source code or binary form for use
- *  in connection with the web services and APIs provided by Facebook.
+ *  in connection with the web services and APIs provided by Parse.
  *
- *  As with any software that integrates with the Facebook platform, your use of
- *  this software is subject to the Facebook Developer Principles and Policies
- *  [http://developers.facebook.com/policy/]. This copyright notice shall be
+ *  As with any software that integrates with the Parse platform, your use of
+ *  this software is subject to the Parse Terms of Service
+ *  [https://www.parse.com/about/terms]. This copyright notice shall be
  *  included in all copies or substantial portions of the software.
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -26,6 +26,7 @@
 
 #import "PFAlertView.h"
 #import "PFPrimaryButton.h"
+#import "PFTextField.h"
 
 NSString *const PFSignUpSuccessNotification = @"com.parse.ui.signup.success";
 NSString *const PFSignUpFailureNotification = @"com.parse.ui.signup.failure";
@@ -330,7 +331,7 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         if (errorCode == kPFErrorInvalidEmailAddress) {
             message = NSLocalizedString(@"The email address is invalid. Please enter a valid email.",
                                         @"Invalid email address error message in PFSignUpViewControllers");
-            responder=  _signUpView.emailField ?: _signUpView.usernameField;
+            responder = _signUpView.emailField ?: _signUpView.usernameField;
         } else if (errorCode == kPFErrorUsernameMissing) {
             message = NSLocalizedString(@"Please enter a username.",
                                         @"Username missing error message in PFSignUpViewController");
@@ -340,13 +341,17 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
                                         @"Password missing error message in PFSignUpViewController");
             responder = _signUpView.passwordField;
         } else if (errorCode == kPFErrorUsernameTaken) {
-            message = NSLocalizedString(@"The username '%@' is taken. Please try choosing another username.",
-                                        @"Username taken error format in PFSignUpViewController");
+            NSString *format = NSLocalizedString(@"The username '%@' is taken. Please try choosing a different username.",
+                                                 @"Username taken error format in PFSignUpViewController");
+            message = [NSString stringWithFormat:format, _signUpView.usernameField.text];
             responder = _signUpView.usernameField;
         } else if (error.code == kPFErrorUserEmailTaken) {
-            message = NSLocalizedString(@"The email '%@' is taken. Please try using another email.",
-                                        @"Email is taken error format in PFSignUpViewController.");
-            responder = _signUpView.emailField ?: _signUpView.usernameField;
+            NSString *format = NSLocalizedString(@"The email '%@' is taken. Please try using a different email.",
+                                                 @"Email is taken error format in PFSignUpViewController.");
+            UITextField *textField = self.emailAsUsername ? _signUpView.usernameField : _signUpView.emailField;
+
+            message = [NSString stringWithFormat:format, textField.text];
+            responder = textField;
         } else if (error.code == kPFErrorUserEmailMissing) {
             message = NSLocalizedString(@"Please enter an email.",
                                         @"Email missing error message in PFSignUpViewController");
@@ -356,6 +361,8 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         if (message != nil) {
             [PFUIAlertView showAlertViewWithTitle:title message:message];
             [responder becomeFirstResponder];
+
+            return;
         }
     }
 
